@@ -218,6 +218,70 @@
 
 
   
+    <article id="post-MQ-start-faild" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2009/07/22/MQ-start-faild/" class="article-date">
+  	<time datetime="2009-07-22T10:15:10.000Z" itemprop="datePublished">2009-07-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2009/07/22/MQ-start-faild/">MQ-start-faild</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>昨天在学习MB是把MQ的默认用户MUSR_MQADMIN的密码改了，当时因为MQ的服务已经起来了，所以没有发现什么问题。今天早上来了以后启动MQ服务时出错了，错误提示如下。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">****************************************</div><div class="line">* 命令: amqmdain qmgr start QM29</div><div class="line">****************************************</div><div class="line">初始化资源“amqmsrvn”失败，rc=<span class="number">0x8000401a</span></div><div class="line">因为配置类型不正确，系统无法开始服务器进程。请检查用户名和密码。</div><div class="line">退出值 = <span class="number">-4</span></div></pre></td></tr></table></figure></p>
+<p>自己郁闷一阵后，找到了解决方法。方法如下：</p>
+<ol>
+<li>检查amqmsrvn.exe文件是否存在于MQ安装目录的bin子目录下。</li>
+<li>检查MUSR_MQADMIN用户已经正确生成，且密码有效。</li>
+<li>确保MUSR_MQADMIN用户有访问MQ安装目录及\winnt\system32目录的权限。</li>
+<li><p>如果上述各项条件均满足，则用以下命令手工注册，amqmspsn.dll和amqmsrcn.dll文件在MQ安装目录的bin子目录下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">amqmsrvn -regserver</div><div class="line">regsvr32 amqmspsn.dll</div><div class="line">regsvr32 amqmsvcn.dll</div></pre></td></tr></table></figure>
+</li>
+<li><p>amqmsrvn -user MUSR_MQADMIN -password <musr_mqadmin的密码> 方法的核心就是amqmsrvn -user MUSR_MQADMIN -password <musr_mqadmin的密码>这条命令，重置MUSR_MQADMIN用户密码，在用户管理里修改密码就没用的，因为MQ的配置文件没有改。</musr_mqadmin的密码></musr_mqadmin的密码></p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-samsung848-install-java" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
